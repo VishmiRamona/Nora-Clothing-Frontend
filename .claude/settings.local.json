@@ -3,7 +3,7 @@
     "allow": [
       "Bash(npm install *)",
       "Bash(curl -s https://nora-clothing-backend.onrender.com/api)",
-      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --disable-gpu --screenshot=\"/tmp/shots/mobile.png\" --window-size=390,3400 --hide-scrollbars --virtual-time-budget=12000 \"http://localhost:5180/\")"
+      "Bash(\"/c/Program Files/Google/Chrome/Application/chrome.exe\" --headless=new --disable-gpu --screenshot=\"/tmp/shots/mobile.png\" --window-size=390,3400 --hide-scrollbars --virtual-time-budget=12000 \"https://nora-clothing-backend.onrender.com/api\")"
     ]
   }
 }
