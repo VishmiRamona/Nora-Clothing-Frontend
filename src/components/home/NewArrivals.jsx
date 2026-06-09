@@ -56,7 +56,7 @@ function BestSellerCard({ product }) {
         </button>
         {product.isNewArrival && (
           <span className="absolute top-4 left-4 bg-navy text-white text-[11px] font-bold uppercase tracking-wide px-3 py-1 rounded-full shadow">
-            New Arrival
+            New Arrivals
           </span>
         )}
       </div>
@@ -88,7 +88,7 @@ export default function BestSellers({ products = [] }) {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-3">
         <div>
           <span className="uppercase tracking-[0.2em] text-xs md:text-sm font-semibold text-teal">Customer Favorites</span>
-          <h2 className="text-3xl md:text-4xl font-bold text-navy mt-2">Best Sellers</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-navy mt-2">New Arrivals</h2>
         </div>
         <Link to="/features" className="text-navy font-semibold hover:text-teal transition-colors">
           View Collection →
