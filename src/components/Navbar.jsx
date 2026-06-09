@@ -223,7 +223,7 @@ export default function Navbar() {
 
         </div>
       </nav>
-      <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} scrollToSection={scrollToSection} />
+      <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} scrollToSection={scrollToSection} user={user} logout={logout} />
     </>
   );
 }

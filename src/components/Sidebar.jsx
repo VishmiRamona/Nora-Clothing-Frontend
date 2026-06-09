@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-export default function Sidebar({ isOpen, onClose, scrollToSection }) {
+export default function Sidebar({ isOpen, onClose, scrollToSection, user, logout }) {
   if (!isOpen) return null;
 
   return (
@@ -23,8 +23,29 @@ export default function Sidebar({ isOpen, onClose, scrollToSection }) {
           </li>
           <li><Link to="/contact" onClick={onClose} className="block py-2 px-3 hover:bg-gray-100 rounded">Contact</Link></li>
           <li className="border-t border-gray-200 mt-2 pt-2"></li>
-          <li><Link to="/login" onClick={onClose} className="block py-2 px-3 hover:bg-gray-100 rounded">Login</Link></li>
-          <li><Link to="/register" onClick={onClose} className="block py-2 px-3 hover:bg-gray-100 rounded">Register</Link></li>
+
+          {user ? (
+            <>
+              <li className="px-3 py-1 text-xs text-gray-400 font-semibold uppercase tracking-wide">
+                Hello, {user.name?.split(' ')[0] || 'User'}
+              </li>
+              <li><Link to="/profile" onClick={onClose} className="block py-2 px-3 hover:bg-gray-100 rounded">Profile</Link></li>
+              <li><Link to="/orders" onClick={onClose} className="block py-2 px-3 hover:bg-gray-100 rounded">My Orders</Link></li>
+              <li>
+                <button
+                  onClick={() => { logout(); onClose(); }}
+                  className="block w-full text-left py-2 px-3 hover:bg-gray-100 rounded text-red-600"
+                >
+                  Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li><Link to="/auth" onClick={onClose} className="block py-2 px-3 hover:bg-gray-100 rounded">Login</Link></li>
+              <li><Link to="/auth" onClick={onClose} className="block py-2 px-3 hover:bg-gray-100 rounded">Register</Link></li>
+            </>
+          )}
         </ul>
       </div>
     </div>

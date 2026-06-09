@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Features from './pages/Features';
 import ProductDetails from './pages/ProductDetails';
@@ -44,6 +45,7 @@ function App() {
         </Routes>
       </main>
       {!isAdminRoute && <Footer />}
+      <ScrollToTop />
     </div>
   );
 }
