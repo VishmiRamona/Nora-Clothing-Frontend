@@ -6,6 +6,8 @@ import { useUser } from '../contexts/UserContext';
 import api from '../services/api';
 import axios from 'axios';
 import ProductForm from '../components/ProductForm';
+// Material Icons imports
+import { MdDashboard, MdPeople, MdLocalMall, MdMessage, MdShoppingCart, MdLogout } from 'react-icons/md';
 
 export default function AdminDashboard() {
   const { isAuthenticated, logout: adminLogout } = useAdminAuth();
@@ -287,7 +289,11 @@ export default function AdminDashboard() {
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead className="bg-skyblue/40">
-            <tr><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th><th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Joined</th></tr>
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Joined</th>
+            </tr>
           </thead>
           <tbody className="divide-y divide-skyblue">
             {users.length === 0 ? <tr><td colSpan="3" className="px-6 py-4 text-center text-gray-400">No users found</td></tr> : users.map(user => <tr key={user._id} className="hover:bg-gray-50"><td className="px-6 py-4">{user.name}</td><td className="px-6 py-4">{user.email}</td><td className="px-6 py-4">{new Date(user.createdAt).toLocaleDateString()}</td></tr>)}
@@ -367,20 +373,54 @@ export default function AdminDashboard() {
       </div>
       <nav className="flex-1 py-4">
         <ul className="space-y-1">
-          {['dashboard', 'users', 'products', 'messages', 'orders'].map(id => (
-            <li key={id}>
-              <button
-                onClick={() => setActiveTab(id)}
-                className={`w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 transition rounded-lg ${activeTab === id ? 'bg-white/20' : ''}`}
-              >
-                <span className="text-xl w-6">{id === 'dashboard' ? '📊' : id === 'users' ? '👥' : id === 'products' ? '👗' : id === 'messages' ? '💬' : '📦'}</span>
-                {sidebarOpen && <span className="capitalize">{id}</span>}
-              </button>
-            </li>
-          ))}
+          <li>
+            <button
+              onClick={() => setActiveTab('dashboard')}
+              className={`w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 transition rounded-lg ${activeTab === 'dashboard' ? 'bg-white/20' : ''}`}
+            >
+              <MdDashboard className="text-xl w-6" />
+              {sidebarOpen && <span className="capitalize">Dashboard</span>}
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => setActiveTab('users')}
+              className={`w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 transition rounded-lg ${activeTab === 'users' ? 'bg-white/20' : ''}`}
+            >
+              <MdPeople className="text-xl w-6" />
+              {sidebarOpen && <span className="capitalize">Users</span>}
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => setActiveTab('products')}
+              className={`w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 transition rounded-lg ${activeTab === 'products' ? 'bg-white/20' : ''}`}
+            >
+              <MdLocalMall className="text-xl w-6" />
+              {sidebarOpen && <span className="capitalize">Products</span>}
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => setActiveTab('messages')}
+              className={`w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 transition rounded-lg ${activeTab === 'messages' ? 'bg-white/20' : ''}`}
+            >
+              <MdMessage className="text-xl w-6" />
+              {sidebarOpen && <span className="capitalize">Messages</span>}
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => setActiveTab('orders')}
+              className={`w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 transition rounded-lg ${activeTab === 'orders' ? 'bg-white/20' : ''}`}
+            >
+              <MdShoppingCart className="text-xl w-6" />
+              {sidebarOpen && <span className="capitalize">Orders</span>}
+            </button>
+          </li>
           <li className="pt-4 border-t border-white/20">
             <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-2 hover:bg-white/10 transition text-red-200 rounded-lg">
-              <span className="text-xl w-6">🚪</span>
+              <MdLogout className="text-xl w-6" />
               {sidebarOpen && <span>Logout</span>}
             </button>
           </li>
