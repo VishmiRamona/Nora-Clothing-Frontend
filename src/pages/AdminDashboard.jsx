@@ -23,6 +23,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [uploadingImages, setUploadingImages] = useState(false);
+  const [showProductForm, setShowProductForm] = useState(false); // NEW: control form visibility
 
   const categoryOptions = [
     'Casual Dresses', 'Maxi Dresses', 'Mini Dresses', 'Office Dresses', 'Party Dresses',
@@ -121,6 +122,7 @@ export default function AdminDashboard() {
         await api.post('/admin/products', productData);
       }
       setEditingProduct(null);
+      setShowProductForm(false); // hide form after submit
       fetchAllData();
     } catch (error) {
       console.error(error);
@@ -139,6 +141,7 @@ export default function AdminDashboard() {
 
   const editProduct = (product) => {
     setEditingProduct(product);
+    setShowProductForm(true); // show form when editing
   };
 
   const handleLogout = () => {
@@ -193,7 +196,7 @@ export default function AdminDashboard() {
                   <td className="py-3">{order.items.map(i => i.name).join(', ')}</td>
                   <td className="py-3">${order.totalAmount}</td>
                   <td className="py-3"><span className="px-2 py-1 bg-teal/20 text-navy rounded-full text-xs font-medium">Delivered</span></td>
-                </tr>
+                 </tr>
               ))
             )}
           </tbody>
@@ -305,14 +308,31 @@ export default function AdminDashboard() {
 
   const renderProducts = () => (
     <div>
-      <ProductForm
-        initialData={editingProduct}
-        onSubmit={handleProductSubmit}
-        onCancel={() => setEditingProduct(null)}
-        uploading={uploadingImages}
-        categoryOptions={categoryOptions}
-      />
-      <div className="grid grid-cols-1 gap-4">
+      {/* Button to show product form */}
+      {!showProductForm && (
+        <button
+          onClick={() => {
+            setEditingProduct(null);
+            setShowProductForm(true);
+          }}
+          className="mb-6 bg-navy text-white px-4 py-2 rounded-lg hover:bg-opacity-80 transition"
+        >
+          + Add New Product
+        </button>
+      )}
+      {showProductForm && (
+        <ProductForm
+          initialData={editingProduct}
+          onSubmit={handleProductSubmit}
+          onCancel={() => {
+            setShowProductForm(false);
+            setEditingProduct(null);
+          }}
+          uploading={uploadingImages}
+          categoryOptions={categoryOptions}
+        />
+      )}
+      <div className="grid grid-cols-1 gap-4 mt-6">
         {products.map(product => (
           <div key={product._id} className="bg-white p-4 rounded-xl shadow-md border border-skyblue flex justify-between items-center flex-wrap gap-3 hover:shadow-lg transition">
             <div className="flex items-center gap-4">
