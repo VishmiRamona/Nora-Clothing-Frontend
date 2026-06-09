@@ -12,7 +12,7 @@ export default function AdminDashboard() {
   const { logout: userLogout } = useUser();
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState('dashboard');
+  const [activeTab, setActiveTab] = useState(() => localStorage.getItem('adminTab') || 'dashboard');
   
   const [products, setProducts] = useState([]);
   const [contacts, setContacts] = useState([]);
@@ -81,6 +81,10 @@ export default function AdminDashboard() {
     if (!isAuthenticated) navigate('/auth');
     fetchAllData();
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    localStorage.setItem('adminTab', activeTab);
+  }, [activeTab]);
 
   const uploadImageToImgBB = async (file) => {
     const formData = new FormData();
