@@ -131,9 +131,18 @@ export default function Navbar() {
               <img src="/images/logo.png" alt="Nora Clothing" className="h-10 w-auto" />
             </Link>
 
-            {/* Right: user icon → cart icon */}
+            {/* Right: user icon → wishlist → cart icon */}
             <div className="flex items-center gap-3">
               <UserMenu user={user} logout={logout} navigate={navigate} iconSize="w-7 h-7" />
+
+              <Link to="/wishlist" className="relative" aria-label="Wishlist">
+                <Heart size={24} />
+                {wishlistCount > 0 && (
+                  <span className="absolute -top-2 -right-3 bg-red-500 text-white rounded-full px-1.5 py-0.5 text-xs leading-none">
+                    {wishlistCount}
+                  </span>
+                )}
+              </Link>
 
               <Link to="/cart" className="relative" aria-label="Cart">
                 <img src="/icons/cart.png" alt="Cart" className="w-8 h-8" />
