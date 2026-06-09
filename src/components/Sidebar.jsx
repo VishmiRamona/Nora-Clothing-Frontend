@@ -16,7 +16,11 @@ export default function Sidebar({ isOpen, onClose, scrollToSection }) {
               Best Sellers
             </button>
           </li>
-          <li><Link to="/features" onClick={onClose} className="block py-2 px-3 hover:bg-gray-100 rounded">New Arrivals</Link></li>
+          <li>
+            <button onClick={() => { scrollToSection('new-arrivals'); onClose(); }} className="block w-full text-left py-2 px-3 hover:bg-gray-100 rounded">
+              New Arrivals
+            </button>
+          </li>
           <li><Link to="/contact" onClick={onClose} className="block py-2 px-3 hover:bg-gray-100 rounded">Contact</Link></li>
           <li className="border-t border-gray-200 mt-2 pt-2"></li>
           <li><Link to="/login" onClick={onClose} className="block py-2 px-3 hover:bg-gray-100 rounded">Login</Link></li>

@@ -84,10 +84,10 @@ export default function BestSellers({ products = [] }) {
   if (!products.length) return null;
 
   return (
-    <section id="best-sellers" className="container mx-auto px-4 py-16 md:py-20">
+    <section id="new-arrivals" className="container mx-auto px-4 py-16 md:py-20">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-3">
         <div>
-          <span className="uppercase tracking-[0.2em] text-xs md:text-sm font-semibold text-teal">Customer Favorites</span>
+          <span className="uppercase tracking-[0.2em] text-xs md:text-sm font-semibold text-teal">Newly Launched</span>
           <h2 className="text-3xl md:text-4xl font-bold text-navy mt-2">New Arrivals</h2>
         </div>
         <Link to="/features" className="text-navy font-semibold hover:text-teal transition-colors">

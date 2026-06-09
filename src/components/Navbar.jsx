@@ -53,11 +53,11 @@ export default function Navbar() {
   };
 
   const categoryMapping = {
-    Casual: 'Casual Dresses', Maxi: 'Maxi Dresses', Mini: 'Mini Dresses', Office: 'Office Dresses', Party: 'Party Dresses',
-    Blazers: 'Blazers', Cardigans: 'Cardigans', Coats: 'Coats', Hoodies: 'Hoodies', Jackets: 'Jackets',
-    Blouses: 'Blouses', 'Crop Tops': 'Crop Tops', Shirts: 'Shirts', 'Tank Tops': 'Tank Tops', 'T-Shirts': 'T-Shirts',
-    Jeans: 'Jeans', Leggings: 'Leggings', Shorts: 'Shorts', Skirts: 'Skirts', Trousers: 'Trousers',
-    Bags: 'Bags', Belts: 'Belts', Jewelry: 'Jewelry', Sunglasses: 'Sunglasses', Watches: 'Watches'
+    Casual: 'casual', Maxi: 'maxi', Mini: 'mini', Office: 'office', Party: 'party',
+    Blazers: 'blazers', Cardigans: 'cardigans', Coats: 'coats', Hoodies: 'hoodies', Jackets: 'jackets',
+    Blouses: 'blouses', 'Crop Tops': 'crop tops', Shirts: 'shirts', 'Tank Tops': 'tank tops', 'T-Shirts': 't-shirts',
+    Jeans: 'jeans', Leggings: 'leggings', Shorts: 'shorts', Skirts: 'skirts', Trousers: 'trousers',
+    Bags: 'bags', Belts: 'belts', Jewelry: 'jewelry', Sunglasses: 'sunglasses', Watches: 'watches'
   };
 
   const categories = [
@@ -128,7 +128,7 @@ export default function Navbar() {
               </div>
 
               <button onClick={() => scrollToSection('best-sellers')} className="hover:text-white transition">Best Sellers</button>
-              <Link to="/features" className="hover:text-white transition">New Arrivals</Link>
+              <button onClick={() => scrollToSection('new-arrivals')} className="hover:text-white transition">New Arrivals</button>
               <Link to="/contact" className="hover:text-white transition">Contact</Link>
             </div>
             <div className="flex gap-4 items-center">

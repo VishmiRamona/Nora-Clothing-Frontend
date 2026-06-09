@@ -51,7 +51,7 @@ export const CartProvider = ({ children }) => {
         productId: product._id,
         name: product.name,
         price: product.price,
-        imageUrl: product.imageUrl,
+        imageUrl: product.images?.[0] || product.imageUrl || '',
         quantity
       }];
     });

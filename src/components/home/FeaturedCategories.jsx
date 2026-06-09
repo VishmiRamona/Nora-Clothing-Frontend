@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const categories = [
-  { name: 'Women', count: '220+ Products', image: '/images/dress1.png', query: 'women' },
-  { name: 'Men', count: '160+ Products', image: '/images/dress2.png', query: 'men' },
-  { name: 'Kids', count: '90+ Products', image: '/images/dress3.png', query: 'kids' },
-  { name: 'Accessories', count: '130+ Products', image: '/images/dress4.png', query: 'accessories' },
+  { name: 'Dresses', count: '80+ Products', image: '/images/dress1.png', query: 'casual' },
+  { name: 'Outerwear', count: '60+ Products', image: '/images/dress2.png', query: 'blazers' },
+  { name: 'Tops', count: '100+ Products', image: '/images/dress3.png', query: 'blouses' },
+  { name: 'Bottoms', count: '70+ Products', image: '/images/dress4.png', query: 'jeans' },
+  { name: 'Accessories', count: '50+ Products', image: '/images/dress1.png', query: 'bags' },
 ];
 
 export default function FeaturedCategories() {
@@ -24,7 +25,7 @@ export default function FeaturedCategories() {
         <h2 className="text-3xl md:text-4xl font-bold text-navy mt-2">Featured Collections</h2>
       </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         {categories.map((cat, i) => (
           <motion.div
             key={cat.name}

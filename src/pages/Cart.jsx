@@ -13,7 +13,7 @@ export default function Cart() {
   const { user } = useUser();
   const { showToast } = useToast();
   const navigate = useNavigate();
-  const [checkoutData, setCheckoutData] = useState({ name: '', email: '', address: '' });
+  const [checkoutData, setCheckoutData] = useState({ name: '', email: '', phone: '', address: '' });
   const [showCheckout, setShowCheckout] = useState(false);
 
   useEffect(() => {
@@ -36,6 +36,7 @@ export default function Cart() {
       const order = {
         customerName: checkoutData.name,
         customerEmail: checkoutData.email,
+        customerPhone: checkoutData.phone,
         customerAddress: checkoutData.address,
         items: cartItems.map(item => ({
           productId: item.productId,
@@ -49,7 +50,7 @@ export default function Cart() {
       await api.post('/orders', order);
       showToast('Order placed successfully!', 'success');
       clearCart();
-      setCheckoutData({ name: '', email: '', address: '' });
+      setCheckoutData({ name: '', email: '', phone: '', address: '' });
       setShowCheckout(false);
     } catch (error) {
       showToast('Error placing order. Please try again.', 'error');
@@ -102,6 +103,16 @@ export default function Cart() {
                 required
                 value={checkoutData.email}
                 onChange={(e) => setCheckoutData({ ...checkoutData, email: e.target.value })}
+                className="w-full border border-skyblue rounded-lg px-3 py-2.5 text-sm text-navy outline-none focus:border-navy"
+              />
+              <input
+                type="tel"
+                placeholder="Phone Number"
+                required
+                pattern="[0-9+\-\s()]{7,15}"
+                title="Please enter a valid phone number (7–15 digits)"
+                value={checkoutData.phone}
+                onChange={(e) => setCheckoutData({ ...checkoutData, phone: e.target.value })}
                 className="w-full border border-skyblue rounded-lg px-3 py-2.5 text-sm text-navy outline-none focus:border-navy"
               />
               <textarea
