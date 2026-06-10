@@ -74,6 +74,8 @@ export default function Auth() {
                 <form onSubmit={handleSignIn} className="space-y-4">
                   <input
                     type="email"
+                    id="signin-email"
+                    name="email"
                     placeholder="Email"
                     autoComplete="email"
                     value={email}
@@ -83,6 +85,8 @@ export default function Auth() {
                   />
                   <input
                     type="password"
+                    id="signin-password"
+                    name="password"
                     placeholder="Password"
                     autoComplete="current-password"
                     value={password}
@@ -119,6 +123,8 @@ export default function Auth() {
                 <form onSubmit={handleSignUp} className="space-y-4">
                   <input
                     type="text"
+                    id="signup-name"
+                    name="name"
                     placeholder="Full Name"
                     autoComplete="name"
                     value={name}
@@ -128,6 +134,8 @@ export default function Auth() {
                   />
                   <input
                     type="email"
+                    id="signup-email"
+                    name="email"
                     placeholder="Email"
                     autoComplete="email"
                     value={email}
@@ -137,6 +145,8 @@ export default function Auth() {
                   />
                   <input
                     type="password"
+                    id="signup-password"
+                    name="password"
                     placeholder="Password"
                     autoComplete="new-password"
                     value={password}

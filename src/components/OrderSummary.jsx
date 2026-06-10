@@ -36,7 +36,10 @@ export default function OrderSummary({ subtotal, onCheckout, checkoutLabel = 'Pr
       <form onSubmit={handleApplyCoupon} className="flex gap-2 mb-5">
         <input
           type="text"
+          id="coupon-code"
+          name="couponCode"
           placeholder="Coupon code"
+          autoComplete="off"
           value={couponCode}
           onChange={(e) => setCouponCode(e.target.value)}
           className="flex-1 border border-skyblue rounded-lg px-3 py-2 text-sm text-navy outline-none focus:border-navy"

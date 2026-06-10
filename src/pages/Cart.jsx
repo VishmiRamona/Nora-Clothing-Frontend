@@ -91,7 +91,10 @@ export default function Cart() {
               <h2 className="text-lg font-bold text-navy">Checkout Details</h2>
               <input
                 type="text"
+                id="checkout-name"
+                name="name"
                 placeholder="Full Name"
+                autoComplete="name"
                 required
                 value={checkoutData.name}
                 onChange={(e) => setCheckoutData({ ...checkoutData, name: e.target.value })}
@@ -99,7 +102,10 @@ export default function Cart() {
               />
               <input
                 type="email"
+                id="checkout-email"
+                name="email"
                 placeholder="Email"
+                autoComplete="email"
                 required
                 value={checkoutData.email}
                 onChange={(e) => setCheckoutData({ ...checkoutData, email: e.target.value })}
@@ -107,7 +113,10 @@ export default function Cart() {
               />
               <input
                 type="tel"
+                id="checkout-phone"
+                name="phone"
                 placeholder="Phone Number"
+                autoComplete="tel"
                 required
                 pattern="[0-9+\-\s()]{7,15}"
                 title="Please enter a valid phone number (7–15 digits)"

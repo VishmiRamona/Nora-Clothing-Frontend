@@ -78,6 +78,8 @@ export default function Profile() {
               <label className="block text-gray-500 text-sm mb-1">Full Name</label>
               <input
                 type="text"
+                id="profile-name"
+                name="name"
                 required
                 autoComplete="name"
                 value={formData.name}
@@ -89,6 +91,8 @@ export default function Profile() {
               <label className="block text-gray-500 text-sm mb-1">Email Address</label>
               <input
                 type="email"
+                id="profile-email"
+                name="email"
                 required
                 autoComplete="email"
                 value={formData.email}
@@ -100,6 +104,8 @@ export default function Profile() {
               <label className="block text-gray-500 text-sm mb-1">Phone Number</label>
               <input
                 type="tel"
+                id="profile-phone"
+                name="phone"
                 autoComplete="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}

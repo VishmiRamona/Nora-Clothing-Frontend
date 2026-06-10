@@ -24,6 +24,8 @@ export default function FilterPanel({ facets, filters, onChange, onReset }) {
         <div className="flex items-center gap-2">
           <input
             type="number"
+            id="filter-min-price"
+            name="minPrice"
             min="0"
             placeholder="Min"
             value={filters.minPrice}
@@ -33,6 +35,8 @@ export default function FilterPanel({ facets, filters, onChange, onReset }) {
           <span className="text-teal">–</span>
           <input
             type="number"
+            id="filter-max-price"
+            name="maxPrice"
             min="0"
             placeholder="Max"
             value={filters.maxPrice}

@@ -67,9 +67,12 @@ export default function SearchBar() {
           <input
             autoFocus
             type="text"
+            id="navbar-search"
+            name="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search products, categories, brands…"
+            autoComplete="off"
             className="flex-1 bg-transparent outline-none text-sm text-navy placeholder:text-teal/60"
           />
         )}
