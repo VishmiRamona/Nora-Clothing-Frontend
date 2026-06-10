@@ -33,6 +33,7 @@ export default function Contact() {
               <input
                 type="text"
                 placeholder="Your Name"
+                autoComplete="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary"
@@ -41,6 +42,7 @@ export default function Contact() {
               <input
                 type="email"
                 placeholder="Your Email"
+                autoComplete="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary"

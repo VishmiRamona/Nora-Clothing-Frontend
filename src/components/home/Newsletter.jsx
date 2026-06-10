@@ -54,6 +54,7 @@ export default function Newsletter() {
           <form onSubmit={handleSubmit} noValidate className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <input
               type="email"
+              autoComplete="email"
               value={email}
               onChange={(e) => { setEmail(e.target.value); setStatus(null); }}
               placeholder="Enter your email address"

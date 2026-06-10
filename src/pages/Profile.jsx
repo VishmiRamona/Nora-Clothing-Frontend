@@ -79,6 +79,7 @@ export default function Profile() {
               <input
                 type="text"
                 required
+                autoComplete="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 className="w-full border border-skyblue rounded-lg px-3 py-2.5 text-sm text-navy outline-none focus:border-navy"
@@ -89,6 +90,7 @@ export default function Profile() {
               <input
                 type="email"
                 required
+                autoComplete="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="w-full border border-skyblue rounded-lg px-3 py-2.5 text-sm text-navy outline-none focus:border-navy"
@@ -98,6 +100,7 @@ export default function Profile() {
               <label className="block text-gray-500 text-sm mb-1">Phone Number</label>
               <input
                 type="tel"
+                autoComplete="tel"
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 placeholder="Optional"
