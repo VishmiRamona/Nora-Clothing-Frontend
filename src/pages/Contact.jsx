@@ -32,6 +32,8 @@ export default function Contact() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 type="text"
+                id="contact-name"
+                name="name"
                 placeholder="Your Name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -40,6 +42,8 @@ export default function Contact() {
               />
               <input
                 type="email"
+                id="contact-email"
+                name="email"
                 placeholder="Your Email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -47,13 +51,15 @@ export default function Contact() {
                 required
               />
               <textarea
+                id="contact-message"
+                name="message"
                 rows="5"
                 placeholder="Your Message"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary"
                 required
-              ></textarea>
+              />
               <button
                 type="submit"
                 className="w-full bg-primary text-white py-2 rounded font-bold hover:bg-opacity-90 transition"
@@ -63,7 +69,7 @@ export default function Contact() {
             </form>
           </div>
 
-          {/* Right column – Contact Info (styled like the "Hello, Friend!" panel) */}
+          {/* Right column – Contact Info */}
           <div className="flex-1 p-8 md:p-12 bg-teal text-white flex flex-col justify-center">
             <h2 className="text-2xl font-bold mb-4">Get in Touch</h2>
             <p className="mb-6 opacity-90">Have a question or need help with your order? We're here to help.</p>
