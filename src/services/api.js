@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://nora-clothing-bac
 
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 15000, 
+  timeout: 30000,
 });
 
 // Request interceptor (unchanged, but robust)

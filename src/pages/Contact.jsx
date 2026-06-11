@@ -4,15 +4,20 @@ import api from '../services/api';
 export default function Contact() {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState('');
+  const [sending, setSending] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSending(true);
+    setStatus('');
     try {
       await api.post('/contact', formData);
       setStatus('Message sent successfully!');
       setFormData({ name: '', email: '', message: '' });
     } catch (error) {
       setStatus('Error sending message. Please try again.');
+    } finally {
+      setSending(false);
     }
   };
 
@@ -64,9 +69,10 @@ export default function Contact() {
               />
               <button
                 type="submit"
-                className="w-full bg-primary text-white py-2 rounded font-bold hover:bg-opacity-90 transition"
+                disabled={sending}
+                className="w-full bg-primary text-white py-2 rounded font-bold hover:bg-opacity-90 transition disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Send Message
+                {sending ? 'Sending…' : 'Send Message'}
               </button>
             </form>
           </div>
