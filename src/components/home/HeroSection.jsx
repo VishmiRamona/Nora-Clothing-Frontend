@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-const heroImage = '/images/dress1.png';
+const heroImage = '/images/hero1.jpg';
 
 const stats = [
   { label: 'Customers', value: '50K+' },
