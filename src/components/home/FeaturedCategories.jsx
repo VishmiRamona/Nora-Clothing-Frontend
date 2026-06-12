@@ -6,7 +6,7 @@ const categories = [
   { name: 'Outerwear', count: '60+ Products', image: '/images/dress2.jpg', query: 'blazers' },
   { name: 'Tops', count: '100+ Products', image: '/images/dress3.jpg', query: 'blouses' },
   { name: 'Bottoms', count: '70+ Products', image: '/images/dress4.jpg', query: 'jeans' },
-  { name: 'Accessories', count: '50+ Products', image: '/images/dress1.jpg', query: 'bags' },
+  { name: 'Accessories', count: '50+ Products', image: '/images/dress5.jpg', query: 'bags' },
 ];
 
 export default function FeaturedCategories() {
