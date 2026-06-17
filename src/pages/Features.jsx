@@ -35,9 +35,6 @@ const categories = [
   }
 ];
 
-// Flatten all subcategories for direct mapping
-const allSubcategories = categories.flatMap(cat => cat.items);
-
 // Map URL parameter (e.g., "mini") to full subcategory name
 const categoryMappingFromParam = {
   casual: 'Casual Dresses', maxi: 'Maxi Dresses', mini: 'Mini Dresses', office: 'Office Dresses', party: 'Party Dresses',
@@ -47,41 +44,60 @@ const categoryMappingFromParam = {
   bags: 'Bags', belts: 'Belts', jewelry: 'Jewelry', sunglasses: 'Sunglasses', watches: 'Watches'
 };
 
+// Reverse mapping: full name → param key
+const reverseMapping = Object.fromEntries(
+  Object.entries(categoryMappingFromParam).map(([key, value]) => [value, key])
+);
+
 export default function Features() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
-  
-  // Determine initial selected subcategory from URL or default
-  const initialSubcategory = categoryParam && categoryMappingFromParam[categoryParam.toLowerCase()]
+
+  // Derive current subcategory from URL, default to 'Casual Dresses'
+  const currentSubcategory = categoryParam && categoryMappingFromParam[categoryParam.toLowerCase()]
     ? categoryMappingFromParam[categoryParam.toLowerCase()]
     : 'Casual Dresses';
-  
-  const [selectedSubcategory, setSelectedSubcategory] = useState(initialSubcategory);
+
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // State for open main categories in sidebar
+  // Auto‑open parent category that contains current subcategory
   const [openCategories, setOpenCategories] = useState(() => {
-    // Auto‑open the parent category that contains the initial subcategory
-    const parent = categories.find(cat => cat.items.includes(initialSubcategory));
+    const parent = categories.find(cat => cat.items.includes(currentSubcategory));
     return parent ? { [parent.name]: true } : {};
   });
 
+  // Fetch products whenever currentSubcategory changes
   useEffect(() => {
-    api.get(`/products?category=${encodeURIComponent(selectedSubcategory)}`)
+    api.get(`/products?category=${encodeURIComponent(currentSubcategory)}`)
       .then(res => setProducts(res.data))
       .catch(err => console.error(err));
-  }, [selectedSubcategory]);
+  }, [currentSubcategory]);
+
+  // Keep parent category open when URL changes
+  useEffect(() => {
+    const parent = categories.find(cat => cat.items.includes(currentSubcategory));
+    if (parent) {
+      setOpenCategories(prev => ({ ...prev, [parent.name]: true }));
+    }
+  }, [currentSubcategory]);
 
   const toggleCategory = (catName) => {
     setOpenCategories(prev => ({ ...prev, [catName]: !prev[catName] }));
   };
 
+  // When a subcategory is clicked, update the URL (not local state)
   const handleSubcategoryClick = (subcat) => {
-    setSelectedSubcategory(subcat);
+    const paramKey = reverseMapping[subcat];
+    if (paramKey) {
+      setSearchParams({ category: paramKey });
+    } else {
+      // fallback: clear param (or set default)
+      setSearchParams({});
+    }
   };
 
   const openProductModal = (product) => {
@@ -138,7 +154,7 @@ export default function Features() {
                         <button
                           onClick={() => handleSubcategoryClick(item)}
                           className={`w-full text-left py-1 px-3 rounded text-sm transition-colors ${
-                            selectedSubcategory === item
+                            currentSubcategory === item
                               ? 'bg-navy text-white'
                               : 'hover:bg-beige text-teal'
                           }`}
@@ -158,7 +174,7 @@ export default function Features() {
           </div>
         </div>
 
-        {/* Mobile category list (kept above grid since it's the primary navigation) */}
+        {/* Mobile category list */}
         <div className="lg:hidden">
           {categories.map((cat) => (
             <div key={cat.name} className="mb-3">
@@ -176,7 +192,7 @@ export default function Features() {
                       <button
                         onClick={() => handleSubcategoryClick(item)}
                         className={`w-full text-left py-1 px-3 rounded text-sm transition-colors ${
-                          selectedSubcategory === item
+                          currentSubcategory === item
                             ? 'bg-navy text-white'
                             : 'hover:bg-beige text-teal'
                         }`}
@@ -194,7 +210,7 @@ export default function Features() {
         {/* Right Content: Products */}
         <div className="flex-1">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-navy">{selectedSubcategory}</h1>
+            <h1 className="text-2xl font-bold text-navy">{currentSubcategory}</h1>
             <button
               onClick={() => setDrawerOpen(true)}
               className="lg:hidden inline-flex items-center gap-2 border border-skyblue rounded-lg px-4 py-2 text-sm font-semibold text-navy hover:border-navy transition-colors"
@@ -211,7 +227,7 @@ export default function Features() {
               <p className="col-span-full text-center text-teal py-10">
                 {products.length > 0
                   ? 'No products match your filters. Try adjusting them.'
-                  : `No products found in ${selectedSubcategory}.`}
+                  : `No products found in ${currentSubcategory}.`}
               </p>
             )}
           </div>
