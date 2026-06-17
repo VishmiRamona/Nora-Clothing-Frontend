@@ -7,8 +7,6 @@ import { useUser } from '../contexts/UserContext';
 import Sidebar from './Sidebar';
 import SearchBar from './SearchBar';
 
-// Self-contained user menu — manages its own open/close state and outside-click
-// handling so it works correctly regardless of which breakpoint is visible.
 function UserMenu({ user, logout, navigate, iconSize = 'w-6 h-6' }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -94,21 +92,23 @@ export default function Navbar() {
     }
   };
 
-  const categoryMapping = {
-    Casual: 'casual', Maxi: 'maxi', Mini: 'mini', Office: 'office', Party: 'party',
-    Blazers: 'blazers', Cardigans: 'cardigans', Coats: 'coats', Hoodies: 'hoodies', Jackets: 'jackets',
-    Blouses: 'blouses', 'Crop Tops': 'crop tops', Shirts: 'shirts', 'Tank Tops': 'tank tops', 'T-Shirts': 't-shirts',
-    Jeans: 'jeans', Leggings: 'leggings', Shorts: 'shorts', Skirts: 'skirts', Trousers: 'trousers',
-    Bags: 'bags', Belts: 'belts', Jewelry: 'jewelry', Sunglasses: 'sunglasses', Watches: 'watches',
-  };
-
+  // Main categories (same as before, but we'll use them for the dropdown)
   const categories = [
-    { name: 'Dresses',     items: ['Casual', 'Maxi', 'Mini', 'Office', 'Party'] },
-    { name: 'Outerwear',   items: ['Blazers', 'Cardigans', 'Coats', 'Hoodies', 'Jackets'] },
-    { name: 'Tops',        items: ['Blouses', 'Crop Tops', 'Shirts', 'Tank Tops', 'T-Shirts'] },
-    { name: 'Bottoms',     items: ['Jeans', 'Leggings', 'Shorts', 'Skirts', 'Trousers'] },
-    { name: 'Accessories', items: ['Bags', 'Belts', 'Jewelry', 'Sunglasses', 'Watches'] },
+    { name: 'Dresses' },
+    { name: 'Outerwear' },
+    { name: 'Tops' },
+    { name: 'Bottoms' },
+    { name: 'Accessories' }
   ];
+
+  // Map category name to URL parameter
+  const categoryParamMap = {
+    Dresses: 'dresses',
+    Outerwear: 'outerwear',
+    Tops: 'tops',
+    Bottoms: 'bottoms',
+    Accessories: 'accessories'
+  };
 
   return (
     <>
@@ -166,34 +166,22 @@ export default function Navbar() {
             <div className="flex items-center gap-8">
               <Link to="/" className="hover:text-white transition">Home</Link>
 
-              {/* Features mega-dropdown */}
+              {/* Features dropdown – now only main categories */}
               <div className="relative group">
                 <button className="hover:text-white flex items-center gap-1.5 transition-colors">
                   Features
                   <img src="/icons/expand.png" alt="" className="w-4 h-4 inline-block transition-transform duration-200 group-hover:rotate-180" />
                 </button>
-                <div className="absolute left-0 top-full pt-3 w-64 z-50 opacity-0 invisible -translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 ease-out">
+                <div className="absolute left-0 top-full pt-3 w-48 z-50 opacity-0 invisible -translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 ease-out">
                   <div className="bg-white rounded-xl shadow-xl border border-skyblue/60 overflow-hidden py-2">
                     {categories.map((cat) => (
-                      <div key={cat.name} className="relative group/sub">
-                        <div className="px-4 py-2.5 hover:bg-beige cursor-pointer flex justify-between items-center text-navy text-sm font-medium whitespace-nowrap transition-colors">
-                          {cat.name}
-                          <img src="/icons/expand1.png" alt="" className="w-3 h-3 ml-3 flex-shrink-0 -rotate-90" />
-                        </div>
-                        <div className="absolute left-full top-0 pl-2 w-56 z-50 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-opacity duration-150">
-                          <div className="bg-white rounded-xl shadow-xl border border-skyblue/60 overflow-hidden py-2">
-                            {cat.items.map((item) => (
-                              <Link
-                                key={item}
-                                to={`/features?category=${encodeURIComponent(categoryMapping[item])}`}
-                                className="block px-4 py-2.5 hover:bg-beige text-navy text-sm whitespace-nowrap transition-colors"
-                              >
-                                {item}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
+                      <Link
+                        key={cat.name}
+                        to={`/features?category=${categoryParamMap[cat.name]}`}
+                        className="block px-4 py-2.5 hover:bg-beige text-navy text-sm font-medium whitespace-nowrap transition-colors"
+                      >
+                        {cat.name}
+                      </Link>
                     ))}
                   </div>
                 </div>

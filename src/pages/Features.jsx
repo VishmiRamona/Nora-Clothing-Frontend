@@ -11,92 +11,163 @@ const EMPTY_FILTERS = {
   minPrice: '', maxPrice: '', categories: [], brands: [], colors: [], sizes: [], minRating: null, inStockOnly: false
 };
 
-// Categories with subcategories (same as navbar)
+// Categories and subcategories (same as navbar)
 const categories = [
-  {
-    name: 'Dresses',
-    items: ['Casual Dresses', 'Maxi Dresses', 'Mini Dresses', 'Office Dresses', 'Party Dresses']
-  },
-  {
-    name: 'Outerwear',
-    items: ['Blazers', 'Cardigans', 'Coats', 'Hoodies', 'Jackets']
-  },
-  {
-    name: 'Tops',
-    items: ['Blouses', 'Crop Tops', 'Shirts', 'Tank Tops', 'T-Shirts']
-  },
-  {
-    name: 'Bottoms',
-    items: ['Jeans', 'Leggings', 'Shorts', 'Skirts', 'Trousers']
-  },
-  {
-    name: 'Accessories',
-    items: ['Bags', 'Belts', 'Jewelry', 'Sunglasses', 'Watches']
-  }
+  { name: 'Dresses', items: ['Casual Dresses', 'Maxi Dresses', 'Mini Dresses', 'Office Dresses', 'Party Dresses'] },
+  { name: 'Outerwear', items: ['Blazers', 'Cardigans', 'Coats', 'Hoodies', 'Jackets'] },
+  { name: 'Tops', items: ['Blouses', 'Crop Tops', 'Shirts', 'Tank Tops', 'T-Shirts'] },
+  { name: 'Bottoms', items: ['Jeans', 'Leggings', 'Shorts', 'Skirts', 'Trousers'] },
+  { name: 'Accessories', items: ['Bags', 'Belts', 'Jewelry', 'Sunglasses', 'Watches'] }
 ];
 
-// Map URL parameter (e.g., "mini") to full subcategory name
-const categoryMappingFromParam = {
-  casual: 'Casual Dresses', maxi: 'Maxi Dresses', mini: 'Mini Dresses', office: 'Office Dresses', party: 'Party Dresses',
-  blazers: 'Blazers', cardigans: 'Cardigans', coats: 'Coats', hoodies: 'Hoodies', jackets: 'Jackets',
-  blouses: 'Blouses', 'crop tops': 'Crop Tops', shirts: 'Shirts', 'tank tops': 'Tank Tops', 't-shirts': 'T-Shirts',
-  jeans: 'Jeans', leggings: 'Leggings', shorts: 'Shorts', skirts: 'Skirts', trousers: 'Trousers',
-  bags: 'Bags', belts: 'Belts', jewelry: 'Jewelry', sunglasses: 'Sunglasses', watches: 'Watches'
+// Map URL param → either parent or subcategory
+// Parent keys: dresses, outerwear, tops, bottoms, accessories
+// Sub keys: casual, maxi, mini, ...
+const paramMap = {
+  // Parents
+  dresses: { type: 'parent', value: 'Dresses' },
+  outerwear: { type: 'parent', value: 'Outerwear' },
+  tops: { type: 'parent', value: 'Tops' },
+  bottoms: { type: 'parent', value: 'Bottoms' },
+  accessories: { type: 'parent', value: 'Accessories' },
+  // Subcategories (keep existing)
+  casual: { type: 'sub', value: 'Casual Dresses' },
+  maxi: { type: 'sub', value: 'Maxi Dresses' },
+  mini: { type: 'sub', value: 'Mini Dresses' },
+  office: { type: 'sub', value: 'Office Dresses' },
+  party: { type: 'sub', value: 'Party Dresses' },
+  blazers: { type: 'sub', value: 'Blazers' },
+  cardigans: { type: 'sub', value: 'Cardigans' },
+  coats: { type: 'sub', value: 'Coats' },
+  hoodies: { type: 'sub', value: 'Hoodies' },
+  jackets: { type: 'sub', value: 'Jackets' },
+  blouses: { type: 'sub', value: 'Blouses' },
+  'crop tops': { type: 'sub', value: 'Crop Tops' },
+  shirts: { type: 'sub', value: 'Shirts' },
+  'tank tops': { type: 'sub', value: 'Tank Tops' },
+  't-shirts': { type: 'sub', value: 'T-Shirts' },
+  jeans: { type: 'sub', value: 'Jeans' },
+  leggings: { type: 'sub', value: 'Leggings' },
+  shorts: { type: 'sub', value: 'Shorts' },
+  skirts: { type: 'sub', value: 'Skirts' },
+  trousers: { type: 'sub', value: 'Trousers' },
+  bags: { type: 'sub', value: 'Bags' },
+  belts: { type: 'sub', value: 'Belts' },
+  jewelry: { type: 'sub', value: 'Jewelry' },
+  sunglasses: { type: 'sub', value: 'Sunglasses' },
+  watches: { type: 'sub', value: 'Watches' }
 };
 
-// Reverse mapping: full name → param key
-const reverseMapping = Object.fromEntries(
-  Object.entries(categoryMappingFromParam).map(([key, value]) => [value, key])
-);
+// Reverse mapping: full name → param key (for sidebar clicks)
+const reverseMap = {};
+Object.entries(paramMap).forEach(([key, val]) => {
+  reverseMap[val.value] = key;
+});
+
+// Helper to get the display title
+const getDisplayTitle = (param) => {
+  if (!param) return 'Casual Dresses';
+  const entry = paramMap[param.toLowerCase()];
+  if (!entry) return 'Casual Dresses';
+  return entry.value;
+};
 
 export default function Features() {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
+  const currentParam = categoryParam ? categoryParam.toLowerCase() : 'casual';
 
-  // Derive current subcategory from URL, default to 'Casual Dresses'
-  const currentSubcategory = categoryParam && categoryMappingFromParam[categoryParam.toLowerCase()]
-    ? categoryMappingFromParam[categoryParam.toLowerCase()]
-    : 'Casual Dresses';
+  const entry = paramMap[currentParam];
+  const isParent = entry && entry.type === 'parent';
+  const parentName = isParent ? entry.value : null;
+  const subName = (!isParent && entry) ? entry.value : null;
+
+  // Determine which subcategory to highlight in sidebar
+  // If parent, pick the first subcategory of that parent
+  let highlightedSub = subName;
+  if (isParent) {
+    const parentCat = categories.find(c => c.name === parentName);
+    highlightedSub = parentCat ? parentCat.items[0] : 'Casual Dresses';
+  } else {
+    highlightedSub = subName || 'Casual Dresses';
+  }
 
   const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Auto‑open parent category that contains current subcategory
+  // Auto-open parent category
   const [openCategories, setOpenCategories] = useState(() => {
-    const parent = categories.find(cat => cat.items.includes(currentSubcategory));
+    let parent = null;
+    if (isParent) {
+      parent = categories.find(cat => cat.name === parentName);
+    } else {
+      parent = categories.find(cat => cat.items.includes(highlightedSub));
+    }
     return parent ? { [parent.name]: true } : {};
   });
 
-  // Fetch products whenever currentSubcategory changes
+  // Fetch products based on param
   useEffect(() => {
-    api.get(`/products?category=${encodeURIComponent(currentSubcategory)}`)
-      .then(res => setProducts(res.data))
-      .catch(err => console.error(err));
-  }, [currentSubcategory]);
+    const fetchData = async () => {
+      try {
+        if (isParent) {
+          // Fetch all products and filter by parent
+          const res = await api.get('/products');
+          setAllProducts(res.data);
+          const parentCat = categories.find(c => c.name === parentName);
+          const subItems = parentCat ? parentCat.items : [];
+          const filtered = res.data.filter(p => {
+            const productSub = p.subcategory || p.category; // adjust field name
+            return subItems.includes(productSub);
+          });
+          setProducts(filtered);
+        } else {
+          // Fetch specific subcategory
+          const res = await api.get(`/products?category=${encodeURIComponent(highlightedSub)}`);
+          setProducts(res.data);
+          setAllProducts([]);
+        }
+      } catch (err) {
+        console.error(err);
+        setProducts([]);
+      }
+    };
+    fetchData();
+  }, [currentParam, isParent, parentName, highlightedSub]);
 
-  // Keep parent category open when URL changes
+  // Update open categories when param changes
   useEffect(() => {
-    const parent = categories.find(cat => cat.items.includes(currentSubcategory));
+    let parent = null;
+    if (isParent) {
+      parent = categories.find(cat => cat.name === parentName);
+    } else {
+      parent = categories.find(cat => cat.items.includes(highlightedSub));
+    }
     if (parent) {
       setOpenCategories(prev => ({ ...prev, [parent.name]: true }));
     }
-  }, [currentSubcategory]);
+  }, [currentParam, isParent, parentName, highlightedSub]);
 
   const toggleCategory = (catName) => {
     setOpenCategories(prev => ({ ...prev, [catName]: !prev[catName] }));
   };
 
-  // When a subcategory is clicked, update the URL (not local state)
+  // When a subcategory is clicked, update URL
   const handleSubcategoryClick = (subcat) => {
-    const paramKey = reverseMapping[subcat];
+    const paramKey = reverseMap[subcat];
     if (paramKey) {
       setSearchParams({ category: paramKey });
     } else {
-      // fallback: clear param (or set default)
-      setSearchParams({});
+      // fallback: try to find parent
+      const parent = categories.find(cat => cat.items.includes(subcat));
+      if (parent) {
+        const parentKey = reverseMap[parent.name];
+        if (parentKey) setSearchParams({ category: parentKey });
+      }
     }
   };
 
@@ -131,6 +202,8 @@ export default function Features() {
 
   const filterProps = { facets, filters, onChange: setFilters, onReset: () => setFilters(EMPTY_FILTERS) };
 
+  const displayTitle = getDisplayTitle(currentParam);
+
   return (
     <div className="container mx-auto py-8 px-4">
       <div className="flex flex-col lg:flex-row gap-8">
@@ -154,7 +227,7 @@ export default function Features() {
                         <button
                           onClick={() => handleSubcategoryClick(item)}
                           className={`w-full text-left py-1 px-3 rounded text-sm transition-colors ${
-                            currentSubcategory === item
+                            highlightedSub === item
                               ? 'bg-navy text-white'
                               : 'hover:bg-beige text-teal'
                           }`}
@@ -192,7 +265,7 @@ export default function Features() {
                       <button
                         onClick={() => handleSubcategoryClick(item)}
                         className={`w-full text-left py-1 px-3 rounded text-sm transition-colors ${
-                          currentSubcategory === item
+                          highlightedSub === item
                             ? 'bg-navy text-white'
                             : 'hover:bg-beige text-teal'
                         }`}
@@ -210,7 +283,7 @@ export default function Features() {
         {/* Right Content: Products */}
         <div className="flex-1">
           <div className="flex items-center justify-between mb-6">
-            <h1 className="text-2xl font-bold text-navy">{currentSubcategory}</h1>
+            <h1 className="text-2xl font-bold text-navy">{displayTitle}</h1>
             <button
               onClick={() => setDrawerOpen(true)}
               className="lg:hidden inline-flex items-center gap-2 border border-skyblue rounded-lg px-4 py-2 text-sm font-semibold text-navy hover:border-navy transition-colors"
@@ -227,7 +300,7 @@ export default function Features() {
               <p className="col-span-full text-center text-teal py-10">
                 {products.length > 0
                   ? 'No products match your filters. Try adjusting them.'
-                  : `No products found in ${currentSubcategory}.`}
+                  : `No products found for ${displayTitle}.`}
               </p>
             )}
           </div>
