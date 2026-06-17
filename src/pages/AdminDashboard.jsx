@@ -6,7 +6,10 @@ import { useUser } from '../contexts/UserContext';
 import api from '../services/api';
 import axios from 'axios';
 import ProductForm from '../components/ProductForm';
-import { MdDashboard, MdPeople, MdLocalMall, MdMessage, MdShoppingCart, MdLogout } from 'react-icons/md';
+import { 
+  MdDashboard, MdPeople, MdLocalMall, MdMessage, MdShoppingCart, MdLogout,
+  MdTrendingUp, MdEmojiEvents, MdStar, MdSell, MdReceipt, MdAttachMoney
+} from 'react-icons/md';
 
 // ── Constants ────────────────────────────────────────────────────────────────
 const PARENT_CATEGORY_MAP = {
@@ -256,9 +259,27 @@ export default function AdminDashboard() {
     <>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {[
-          { title: 'Total Revenue', value: `$${totalRevenue.toLocaleString()}`, icon: '💰', trend: '+12%', tab: 'orders' },
-          { title: 'Total Customers', value: users.length, icon: '👥', trend: '+5%', tab: 'users' },
-          { title: 'Products Listed', value: products.length, icon: '📦', trend: '+3%', tab: 'products' },
+          { 
+            title: 'Total Revenue', 
+            value: `$${totalRevenue.toLocaleString()}`, 
+            icon: <MdShoppingCart size={36} className="text-teal" />, 
+            trend: '+12%', 
+            tab: 'orders' 
+          },
+          { 
+            title: 'Total Customers', 
+            value: users.length, 
+            icon: <MdPeople size={36} className="text-teal" />, 
+            trend: '+5%', 
+            tab: 'users' 
+          },
+          { 
+            title: 'Products Listed', 
+            value: products.length, 
+            icon: <MdLocalMall size={36} className="text-teal" />, 
+            trend: '+3%', 
+            tab: 'products' 
+          },
         ].map(card => (
           <motion.div key={card.tab} whileHover={{ scale: 1.02, y: -4 }} transition={{ duration: 0.2 }} onClick={() => goToTab(card.tab)}
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all p-6 cursor-pointer border border-skyblue group"
@@ -279,7 +300,9 @@ export default function AdminDashboard() {
         {/* Recent Orders mini-table */}
         <div className="bg-white rounded-2xl shadow-md p-6 border border-skyblue">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-bold text-navy">📦 Recent Orders</h2>
+            <h2 className="text-lg font-bold text-navy flex items-center gap-2">
+              <MdReceipt size={20} className="text-teal" /> Recent Orders
+            </h2>
             <button onClick={() => setActiveTab('orders')} className="text-teal text-sm hover:underline">View all →</button>
           </div>
           <div className="overflow-x-auto">
@@ -307,7 +330,9 @@ export default function AdminDashboard() {
 
         {/* Earnings chart */}
         <div className="bg-white rounded-2xl shadow-md p-6 border border-skyblue">
-          <h2 className="text-lg font-bold text-navy mb-2">📊 Earnings (weekly)</h2>
+          <h2 className="text-lg font-bold text-navy flex items-center gap-2 mb-2">
+            <MdAttachMoney size={20} className="text-teal" /> Earnings (weekly)
+          </h2>
           <div className="text-3xl font-bold text-navy">${totalRevenue.toLocaleString()}</div>
           <div className="h-28 flex items-end gap-1.5 mt-4">
             {[40, 60, 30, 80, 50, 70, 45].map((h, i) => (
@@ -324,7 +349,9 @@ export default function AdminDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Customers */}
         <div className="bg-white rounded-2xl shadow-md p-6 border border-skyblue">
-          <h2 className="text-lg font-bold text-navy mb-4">👥 Top Customers</h2>
+          <h2 className="text-lg font-bold text-navy flex items-center gap-2 mb-4">
+            <MdPeople size={20} className="text-teal" /> Top Customers
+          </h2>
           {topCustomers.length === 0
             ? <p className="text-gray-400 text-sm">No customers yet</p>
             : topCustomers.map((c, i) => (
@@ -343,11 +370,15 @@ export default function AdminDashboard() {
 
         {/* Best Selling Products */}
         <div className="bg-white rounded-2xl shadow-md p-6 border border-skyblue">
-          <h2 className="text-lg font-bold text-navy mb-4">🏆 Best Selling Products</h2>
+          <h2 className="text-lg font-bold text-navy flex items-center gap-2 mb-4">
+            <MdEmojiEvents size={20} className="text-teal" /> Best Selling Products
+          </h2>
           <div className="grid grid-cols-2 gap-3">
             {topProducts.map((p, i) => (
               <div key={i} className="bg-skyblue/20 rounded-xl p-3 text-center hover:shadow-md transition group">
-                <div className="text-3xl mb-1 group-hover:scale-110 transition-transform">👗</div>
+                <div className="text-3xl mb-1 group-hover:scale-110 transition-transform">
+                  <MdSell size={28} className="text-teal mx-auto" />
+                </div>
                 <p className="font-semibold text-navy text-sm truncate">{p.name}</p>
                 <p className="text-xs text-gray-500">{p.sales} sold</p>
                 <p className="text-teal font-bold mt-1">${p.price}</p>
