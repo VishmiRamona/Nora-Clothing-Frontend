@@ -46,11 +46,11 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-lg mb-4 text-skyblue">Categories</h4>
             <ul className="space-y-2.5">
-              <li><Link to="/features?category=women" className="text-white/70 hover:text-white transition-colors">Women</Link></li>
-              <li><Link to="/features?category=men" className="text-white/70 hover:text-white transition-colors">Men</Link></li>
-              <li><Link to="/features?category=kids" className="text-white/70 hover:text-white transition-colors">Kids</Link></li>
+              <li><Link to="/features?category=dresses" className="text-white/70 hover:text-white transition-colors">Dresses</Link></li>
+              <li><Link to="/features?category=outerwear" className="text-white/70 hover:text-white transition-colors">Outerwear</Link></li>
+              <li><Link to="/features?category=tops" className="text-white/70 hover:text-white transition-colors"> Tops</Link></li>
+              <li><Link to="/features?category=bottoms" className="text-white/70 hover:text-white transition-colors">Bottoms</Link></li>
               <li><Link to="/features?category=accessories" className="text-white/70 hover:text-white transition-colors">Accessories</Link></li>
-              <li><Link to="/features?category=sale" className="text-white/70 hover:text-white transition-colors">Sale</Link></li>
             </ul>
           </div>
 
