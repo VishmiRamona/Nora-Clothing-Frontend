@@ -18,9 +18,9 @@ export default function HeroSection() {
       <div className="absolute -bottom-32 -left-20 w-72 h-72 md:w-96 md:h-96 bg-navy/10 rounded-full blur-3xl" />
 
       <div className="container mx-auto relative z-10 px-4 py-16 md:py-24 lg:py-28">
-        {/* ↓↓↓ ONLY CHANGE: gap-8 → gap-2 ↓↓↓ */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2 items-center">
-          {/* Left side */}
+        {/* TWO CHANGES: gap-8 → gap-4, and remove lg:justify-end */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center">
+          {/* Left side - unchanged */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={{ opacity: 1, x: 0 }}
@@ -73,12 +73,12 @@ export default function HeroSection() {
             </div>
           </motion.div>
 
-          {/* Right side */}
+          {/* Right side - changed: removed lg:justify-end so image aligns left */}
           <motion.div
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="relative flex justify-center lg:justify-end"
+            className="relative flex justify-center lg:justify-start"
           >
             <div className="relative w-72 sm:w-80 md:w-[26rem]">
               <div className="absolute inset-6 bg-gradient-to-tr from-teal/30 to-skyblue/50 rounded-[2.5rem] blur-2xl" />
