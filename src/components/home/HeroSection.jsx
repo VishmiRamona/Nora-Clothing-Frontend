@@ -18,7 +18,8 @@ export default function HeroSection() {
       <div className="absolute -bottom-32 -left-20 w-72 h-72 md:w-96 md:h-96 bg-navy/10 rounded-full blur-3xl" />
 
       <div className="container mx-auto relative z-10 px-4 py-16 md:py-24 lg:py-28">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        {/* ↓↓↓ ONLY CHANGE: gap-12 → gap-8 ↓↓↓ */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Left side */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
