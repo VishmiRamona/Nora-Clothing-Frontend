@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { useEffect } from 'react'; // <-- added for scroll-to-top
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
@@ -20,6 +21,11 @@ import NotFound from './pages/NotFound';
 function App() {
   const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
+
+  // Scroll to top whenever the route changes (including footer category links)
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen flex flex-col">
