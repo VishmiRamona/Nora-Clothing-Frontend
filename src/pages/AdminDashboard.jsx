@@ -398,10 +398,11 @@ export default function AdminDashboard() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex flex-wrap gap-1.5">
-                      <button onClick={() => openEditUser(user)}
+                      {/* Edit button commented out */}
+                      {/* <button onClick={() => openEditUser(user)}
                         className="px-3 py-1.5 bg-navy text-white rounded-lg text-xs font-medium hover:bg-teal transition-colors">
                         Edit
-                      </button>
+                      </button> */}
                       <button onClick={() => toggleUserStatus(user)}
                         className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${user.isActive !== false ? 'bg-orange-50 text-orange-700 hover:bg-orange-100' : 'bg-teal/10 text-teal hover:bg-teal/20'}`}>
                         {user.isActive !== false ? 'Deactivate' : 'Activate'}
@@ -419,7 +420,7 @@ export default function AdminDashboard() {
         </table>
       </div>
 
-      {/* Edit User Modal */}
+      {/* Edit User Modal - kept intact */}
       <AnimatePresence>
         {editingUser && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
