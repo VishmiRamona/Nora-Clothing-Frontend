@@ -51,7 +51,7 @@ export default function Cart() {
     if (!phone.trim()) {
       errors.phone = 'Phone number is required';
     } else if (!phoneRegex.test(phone)) {
-      errors.phone = 'Phone number must be exactly 10 digits (numbers only)';
+      errors.phone = 'Phone number must be exactly 10 numbers (numbers only)';
     }
 
     // Address
