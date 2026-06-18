@@ -17,7 +17,6 @@ export default function Cart() {
   const [formErrors, setFormErrors] = useState({});
   const [showCheckout, setShowCheckout] = useState(false);
 
-  // Wait for both user and cart to be loaded before doing anything
   useEffect(() => {
     if (!userLoading && !cartLoading) {
       if (!user) {
@@ -27,7 +26,6 @@ export default function Cart() {
     }
   }, [userLoading, cartLoading, user, navigate, showToast]);
 
-  // Show loading spinner while checking auth / cart
   if (userLoading || cartLoading) {
     return (
       <div className="container mx-auto py-24 px-4 text-center">
@@ -39,7 +37,6 @@ export default function Cart() {
 
   if (!user) return null;
 
-  // ── Validation ──────────────────────────────────────────────────────────────
   const validateForm = () => {
     const errors = {};
     const { name, email, phone, address } = checkoutData;

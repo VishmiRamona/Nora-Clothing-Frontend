@@ -6,26 +6,29 @@ const CartContext = createContext();
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  const { user } = useUser();
+  const { user, loading: userLoading } = useUser(); // get loading state
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Load cart from localStorage when user changes
+  // Load cart ONLY after user is resolved
   useEffect(() => {
-    if (user) {
-      const savedCart = localStorage.getItem(`cart_${user.id}`);
-      if (savedCart) {
-        setCartItems(JSON.parse(savedCart));
+    if (!userLoading) {
+      // user is known (either logged in or not)
+      if (user) {
+        const savedCart = localStorage.getItem(`cart_${user.id}`);
+        if (savedCart) {
+          setCartItems(JSON.parse(savedCart));
+        } else {
+          setCartItems([]);
+        }
       } else {
         setCartItems([]);
       }
-    } else {
-      setCartItems([]);
+      setLoading(false);
     }
-    setLoading(false);
-  }, [user]);
+  }, [user, userLoading]);
 
-  // Save cart to localStorage whenever it changes
+  // Save cart to localStorage whenever it changes (only when user exists and loaded)
   useEffect(() => {
     if (user && !loading) {
       localStorage.setItem(`cart_${user.id}`, JSON.stringify(cartItems));
