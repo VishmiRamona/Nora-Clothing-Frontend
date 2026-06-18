@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
 import { useAdminAuth } from '../contexts/AdminAuthContext';
 import { useToast } from '../contexts/ToastContext';
@@ -16,8 +16,14 @@ export default function Auth() {
   const { showToast } = useToast();
   const navigate = useNavigate();
 
+  // Password visibility toggles (icon only)
   const [showSignInPassword, setShowSignInPassword] = useState(false);
   const [showSignUpPassword, setShowSignUpPassword] = useState(false);
+
+  const handleForgotPassword = (e) => {
+    e.preventDefault();
+    showToast('Password reset isn\'t available yet — please contact support for help signing in.', 'info');
+  };
 
   const handleSignIn = async (e) => {
     e.preventDefault();
@@ -60,6 +66,7 @@ export default function Auth() {
     <div className="container mx-auto py-12 px-4 max-w-6xl">
       <div className="bg-white rounded-xl shadow-xl overflow-hidden">
         <div className="flex flex-col md:flex-row">
+          {/* Left Column – Sign In */}
           <div className={`flex-1 p-8 md:p-12 ${isSignIn ? 'bg-gray-50' : 'bg-teal text-white'}`}>
             {isSignIn ? (
               <>
@@ -104,9 +111,7 @@ export default function Auth() {
                     </button>
                   </div>
                   <div className="text-right">
-                    <Link to="/forgot-password" className="text-sm text-primary hover:underline">
-                      Forgot Your Password?
-                    </Link>
+                    <button type="button" onClick={handleForgotPassword} className="text-sm text-primary hover:underline">Forgot Your Password?</button>
                   </div>
                   <button type="submit" className="w-full bg-primary text-white py-2 rounded font-bold hover:bg-opacity-90 transition">
                     SIGN IN
@@ -124,6 +129,7 @@ export default function Auth() {
             )}
           </div>
 
+          {/* Right Column – Sign Up */}
           <div className={`flex-1 p-8 md:p-12 ${!isSignIn ? 'bg-gray-50' : 'bg-teal text-white'}`}>
             {!isSignIn ? (
               <>
