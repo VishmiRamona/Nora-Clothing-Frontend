@@ -100,7 +100,7 @@ export default function Profile() {
                 className="w-full border border-skyblue rounded-lg px-3 py-2.5 text-sm text-navy outline-none focus:border-navy"
               />
             </div>
-            <div>
+            {/* <div>
               <label className="block text-gray-500 text-sm mb-1">Phone Number</label>
               <input
                 type="tel"
@@ -112,7 +112,7 @@ export default function Profile() {
                 placeholder="Optional"
                 className="w-full border border-skyblue rounded-lg px-3 py-2.5 text-sm text-navy outline-none focus:border-navy"
               />
-            </div>
+            </div>*/}
             <div className="flex gap-3 pt-2">
               <button
                 type="submit"
