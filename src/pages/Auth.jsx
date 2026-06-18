@@ -111,7 +111,7 @@ export default function Auth() {
                     </button>
                   </div>
                   <div className="text-right">
-                    <button type="button" onClick={handleForgotPassword} className="text-sm text-primary hover:underline">Forgot Your Password?</button>
+                    {/* <button type="button" onClick={handleForgotPassword} className="text-sm text-primary hover:underline">Forgot Your Password?</button> */}
                   </div>
                   <button type="submit" className="w-full bg-primary text-white py-2 rounded font-bold hover:bg-opacity-90 transition">
                     SIGN IN
