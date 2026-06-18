@@ -51,7 +51,7 @@ export default function Cart() {
     if (!phone.trim()) {
       errors.phone = 'Phone number is required';
     } else if (!phoneRegex.test(phone)) {
-      errors.phone = 'Phone number must be exactly 10 numbers (numbers only)';
+      errors.phone = 'Phone number must be exactly 10 digits (numbers only)';
     }
 
     // Address
@@ -199,7 +199,7 @@ export default function Cart() {
                   type="tel"
                   id="checkout-phone"
                   name="phone"
-                  placeholder="Phone Number (10 digits)"
+                  placeholder="Phone Number (10 numbers)"
                   autoComplete="tel"
                   required
                   maxLength="10"
