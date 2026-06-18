@@ -16,6 +16,10 @@ export default function Auth() {
   const { showToast } = useToast();
   const navigate = useNavigate();
 
+  // Password visibility toggles (icon only)
+  const [showSignInPassword, setShowSignInPassword] = useState(false);
+  const [showSignUpPassword, setShowSignUpPassword] = useState(false);
+
   const handleForgotPassword = (e) => {
     e.preventDefault();
     showToast('Password reset isn\'t available yet — please contact support for help signing in.', 'info');
@@ -25,14 +29,12 @@ export default function Auth() {
     e.preventDefault();
     setError('');
 
-    // First try admin login
     const adminResult = await adminLogin(email, password);
     if (adminResult.success) {
       navigate('/admin/dashboard');
       return;
     }
 
-    // Then try user login
     try {
       const res = await api.post('/users/login', { email, password });
       if (res.data.token) {
@@ -83,17 +85,31 @@ export default function Auth() {
                     className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary"
                     required
                   />
-                  <input
-                    type="password"
-                    id="signin-password"
-                    name="password"
-                    placeholder="Password"
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary"
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      type={showSignInPassword ? 'text' : 'password'}
+                      id="signin-password"
+                      name="password"
+                      placeholder="Password"
+                      autoComplete="current-password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary pr-10"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowSignInPassword(!showSignInPassword)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2"
+                      aria-label={showSignInPassword ? 'Hide password' : 'Show password'}
+                    >
+                      <img
+                        src={showSignInPassword ? '/icons/hide-pwd.png' : '/icons/show-pwd.png'}
+                        alt={showSignInPassword ? 'Hide' : 'Show'}
+                        className="w-5 h-5"
+                      />
+                    </button>
+                  </div>
                   <div className="text-right">
                     <button type="button" onClick={handleForgotPassword} className="text-sm text-primary hover:underline">Forgot Your Password?</button>
                   </div>
@@ -143,17 +159,31 @@ export default function Auth() {
                     className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary"
                     required
                   />
-                  <input
-                    type="password"
-                    id="signup-password"
-                    name="password"
-                    placeholder="Password"
-                    autoComplete="new-password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary"
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      type={showSignUpPassword ? 'text' : 'password'}
+                      id="signup-password"
+                      name="password"
+                      placeholder="Password"
+                      autoComplete="new-password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-primary pr-10"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowSignUpPassword(!showSignUpPassword)}
+                      className="absolute right-2 top-1/2 -translate-y-1/2"
+                      aria-label={showSignUpPassword ? 'Hide password' : 'Show password'}
+                    >
+                      <img
+                        src={showSignUpPassword ? '/icons/hide-pwd.png' : '/icons/show-pwd.png'}
+                        alt={showSignUpPassword ? 'Hide' : 'Show'}
+                        className="w-5 h-5"
+                      />
+                    </button>
+                  </div>
                   <button type="submit" className="w-full bg-primary text-white py-2 rounded font-bold hover:bg-opacity-90 transition">
                     SIGN UP
                   </button>
