@@ -9,20 +9,33 @@ import CartItemCard from '../components/CartItemCard';
 import OrderSummary from '../components/OrderSummary';
 
 export default function Cart() {
-  const { cartItems, updateQuantity, removeItem, getCartTotal, clearCart } = useCart();
-  const { user } = useUser();
+  const { cartItems, loading: cartLoading, updateQuantity, removeItem, getCartTotal, clearCart } = useCart();
+  const { user, loading: userLoading } = useUser();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const [checkoutData, setCheckoutData] = useState({ name: '', email: '', phone: '', address: '' });
   const [formErrors, setFormErrors] = useState({});
   const [showCheckout, setShowCheckout] = useState(false);
 
+  // Wait for both user and cart to be loaded before doing anything
   useEffect(() => {
-    if (!user) {
-      showToast('Please login to view your cart', 'warning');
-      navigate('/auth', { replace: true });
+    if (!userLoading && !cartLoading) {
+      if (!user) {
+        showToast('Please login to view your cart', 'warning');
+        navigate('/auth', { replace: true });
+      }
     }
-  }, [user, navigate, showToast]);
+  }, [userLoading, cartLoading, user, navigate, showToast]);
+
+  // Show loading spinner while checking auth / cart
+  if (userLoading || cartLoading) {
+    return (
+      <div className="container mx-auto py-24 px-4 text-center">
+        <div className="w-10 h-10 border-4 border-teal border-t-transparent rounded-full animate-spin mx-auto" />
+        <p className="text-navy mt-4">Loading your cart...</p>
+      </div>
+    );
+  }
 
   if (!user) return null;
 
@@ -31,14 +44,12 @@ export default function Cart() {
     const errors = {};
     const { name, email, phone, address } = checkoutData;
 
-    // Name
     if (!name.trim()) {
       errors.name = 'Full name is required';
     } else if (name.trim().length < 2) {
       errors.name = 'Name must be at least 2 characters';
     }
 
-    // Email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email.trim()) {
       errors.email = 'Email is required';
@@ -46,7 +57,6 @@ export default function Cart() {
       errors.email = 'Please enter a valid email address';
     }
 
-    // Phone – exactly 10 digits, numbers only
     const phoneRegex = /^\d{10}$/;
     if (!phone.trim()) {
       errors.phone = 'Phone number is required';
@@ -54,7 +64,6 @@ export default function Cart() {
       errors.phone = 'Phone number must be exactly 10 digits (numbers only)';
     }
 
-    // Address
     if (!address.trim()) {
       errors.address = 'Shipping address is required';
     } else if (address.trim().length < 5) {
@@ -65,7 +74,6 @@ export default function Cart() {
     return Object.keys(errors).length === 0;
   };
 
-  // ── Checkout ────────────────────────────────────────────────────────────────
   const handleCheckout = async (e) => {
     e.preventDefault();
 
@@ -105,7 +113,6 @@ export default function Cart() {
     }
   };
 
-  // ── Empty cart ─────────────────────────────────────────────────────────────
   if (cartItems.length === 0) {
     return (
       <div className="container mx-auto py-24 px-4 text-center">
@@ -122,13 +129,11 @@ export default function Cart() {
     );
   }
 
-  // ── Main render ────────────────────────────────────────────────────────────
   return (
     <div className="container mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold text-navy mb-8">Shopping Cart</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Items column */}
         <div className="lg:col-span-2 space-y-4">
           {cartItems.map((item) => (
             <CartItemCard
@@ -139,7 +144,6 @@ export default function Cart() {
             />
           ))}
 
-          {/* Checkout form */}
           {showCheckout && (
             <form
               onSubmit={handleCheckout}
@@ -147,7 +151,6 @@ export default function Cart() {
             >
               <h2 className="text-lg font-bold text-navy">Checkout Details</h2>
 
-              {/* Name */}
               <div>
                 <input
                   type="text"
@@ -165,12 +168,9 @@ export default function Cart() {
                     formErrors.name ? 'border-red-500' : 'border-skyblue'
                   }`}
                 />
-                {formErrors.name && (
-                  <p className="text-red-500 text-xs mt-1">{formErrors.name}</p>
-                )}
+                {formErrors.name && <p className="text-red-500 text-xs mt-1">{formErrors.name}</p>}
               </div>
 
-              {/* Email */}
               <div>
                 <input
                   type="email"
@@ -188,12 +188,9 @@ export default function Cart() {
                     formErrors.email ? 'border-red-500' : 'border-skyblue'
                   }`}
                 />
-                {formErrors.email && (
-                  <p className="text-red-500 text-xs mt-1">{formErrors.email}</p>
-                )}
+                {formErrors.email && <p className="text-red-500 text-xs mt-1">{formErrors.email}</p>}
               </div>
 
-              {/* Phone – exactly 10 digits */}
               <div>
                 <input
                   type="tel"
@@ -205,7 +202,6 @@ export default function Cart() {
                   maxLength="10"
                   value={checkoutData.phone}
                   onChange={(e) => {
-                    // Strip non‑numeric characters
                     const digits = e.target.value.replace(/\D/g, '');
                     setCheckoutData({ ...checkoutData, phone: digits });
                     if (formErrors.phone) setFormErrors({ ...formErrors, phone: '' });
@@ -214,12 +210,9 @@ export default function Cart() {
                     formErrors.phone ? 'border-red-500' : 'border-skyblue'
                   }`}
                 />
-                {formErrors.phone && (
-                  <p className="text-red-500 text-xs mt-1">{formErrors.phone}</p>
-                )}
+                {formErrors.phone && <p className="text-red-500 text-xs mt-1">{formErrors.phone}</p>}
               </div>
 
-              {/* Address */}
               <div>
                 <textarea
                   placeholder="Shipping Address"
@@ -234,9 +227,7 @@ export default function Cart() {
                     formErrors.address ? 'border-red-500' : 'border-skyblue'
                   }`}
                 />
-                {formErrors.address && (
-                  <p className="text-red-500 text-xs mt-1">{formErrors.address}</p>
-                )}
+                {formErrors.address && <p className="text-red-500 text-xs mt-1">{formErrors.address}</p>}
               </div>
 
               <button
@@ -249,7 +240,6 @@ export default function Cart() {
           )}
         </div>
 
-        {/* Order summary */}
         <div className="lg:sticky lg:top-24">
           <OrderSummary
             subtotal={getCartTotal()}

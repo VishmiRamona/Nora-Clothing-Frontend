@@ -1,15 +1,16 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { useUser } from './UserContext';  // Import user context
+import { useUser } from './UserContext';
 
 const CartContext = createContext();
 
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  const { user } = useUser();  // Get current logged-in user
+  const { user } = useUser();
   const [cartItems, setCartItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Load cart from localStorage when user changes (so each user has their own cart)
+  // Load cart from localStorage when user changes
   useEffect(() => {
     if (user) {
       const savedCart = localStorage.getItem(`cart_${user.id}`);
@@ -19,25 +20,23 @@ export const CartProvider = ({ children }) => {
         setCartItems([]);
       }
     } else {
-      // Clear cart when logged out
       setCartItems([]);
     }
+    setLoading(false);
   }, [user]);
 
-  // Save cart to localStorage whenever it changes (per user)
+  // Save cart to localStorage whenever it changes
   useEffect(() => {
-    if (user && cartItems.length >= 0) {
+    if (user && !loading) {
       localStorage.setItem(`cart_${user.id}`, JSON.stringify(cartItems));
     }
-  }, [cartItems, user]);
+  }, [cartItems, user, loading]);
 
   const addToCart = (product, quantity = 1) => {
-    // Require login to add items
     if (!user) {
       alert('Please login to add items to your cart');
       return;
     }
-
     setCartItems(prev => {
       const existing = prev.find(item => item.productId === product._id);
       if (existing) {
@@ -87,6 +86,7 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider value={{
       cartItems,
+      loading,
       addToCart,
       updateQuantity,
       removeItem,
