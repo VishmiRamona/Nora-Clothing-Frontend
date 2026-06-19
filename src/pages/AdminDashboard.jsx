@@ -91,6 +91,9 @@ export default function AdminDashboard() {
   const [replyText, setReplyText]     = useState('');
   const [sendingReply, setSendingReply] = useState(false);
 
+  // ── Delete confirmation for messages ──────────────────────────────────
+  const [confirmDeleteContact, setConfirmDeleteContact] = useState(null);
+
   // ── Orders state ─────────────────────────────────────────────────────────
   const [orderSearch, setOrderSearch]           = useState('');
   const [orderFilterStatus, setOrderFilterStatus] = useState('');
@@ -480,7 +483,7 @@ export default function AdminDashboard() {
         )}
       </AnimatePresence>
 
-      {/* Delete Confirmation */}
+      {/* Delete Confirmation for Users */}
       <AnimatePresence>
         {confirmDeleteUser && (
           <ConfirmDialog
@@ -640,7 +643,7 @@ export default function AdminDashboard() {
                             className="px-3 py-1.5 bg-navy text-white rounded-lg text-xs font-medium hover:bg-teal transition-colors">
                             Reply
                           </button>
-                          <button onClick={() => deleteContact(msg._id)}
+                          <button onClick={() => setConfirmDeleteContact(msg)}
                             className="px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-xs font-medium hover:bg-red-100 transition-colors">
                             Delete
                           </button>
@@ -700,6 +703,20 @@ export default function AdminDashboard() {
               </div>
             </motion.div>
           </div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Confirmation for Messages */}
+      <AnimatePresence>
+        {confirmDeleteContact && (
+          <ConfirmDialog
+            message={`Delete message from "${confirmDeleteContact.name}"? This cannot be undone.`}
+            onConfirm={() => {
+              deleteContact(confirmDeleteContact._id);
+              setConfirmDeleteContact(null);
+            }}
+            onCancel={() => setConfirmDeleteContact(null)}
+          />
         )}
       </AnimatePresence>
     </div>
