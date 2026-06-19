@@ -8,7 +8,8 @@ import axios from 'axios';
 import ProductForm from '../components/ProductForm';
 import { 
   MdDashboard, MdPeople, MdLocalMall, MdMessage, MdShoppingCart, MdLogout,
-  MdTrendingUp, MdEmojiEvents, MdStar, MdSell, MdReceipt, MdAttachMoney
+  MdTrendingUp, MdEmojiEvents, MdStar, MdSell, MdReceipt, MdAttachMoney,
+  MdReplyAll
 } from 'react-icons/md';
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -29,8 +30,13 @@ const STATUS_COLORS = {
 };
 
 // ── Shared UI Helpers ────────────────────────────────────────────────────────
-function Badge({ label, colorClass }) {
-  return <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${colorClass}`}>{label}</span>;
+function Badge({ label, colorClass, icon }) {
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${colorClass}`}>
+      {icon && <span className="mr-1">{icon}</span>}
+      {label}
+    </span>
+  );
 }
 
 function ConfirmDialog({ message, confirmLabel = 'Delete', onConfirm, onCancel }) {
@@ -365,7 +371,7 @@ export default function AdminDashboard() {
                   <p className="font-medium text-navy">{c.name}</p>
                   <p className="text-xs text-gray-500">Total spent: ${c.total.toFixed(2)}</p>
                 </div>
-                <Badge label="✨ Top" colorClass="bg-teal/20 text-teal" />
+                <Badge label="Top" colorClass="bg-teal/20 text-teal" icon={<MdStar size={14} className="text-yellow-500" />} />
               </motion.div>
             ))
           }
@@ -659,7 +665,9 @@ export default function AdminDashboard() {
                           <div className="space-y-2">
                             {msg.replies.map((r, i) => (
                               <div key={i} className="flex items-start gap-2 text-xs text-gray-600 bg-white rounded-lg px-3 py-2 border border-skyblue/30">
-                                <span className="text-teal font-bold mt-0.5">↩</span>
+                                <span className="text-teal font-bold mt-0.5">
+                                  <MdReplyAll size={16} />
+                                </span>
                                 <div className="flex-1">
                                   <p>{r.message}</p>
                                   {r.sentAt && <p className="text-gray-400 mt-0.5">{new Date(r.sentAt).toLocaleString()}</p>}
