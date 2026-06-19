@@ -100,6 +100,9 @@ export default function AdminDashboard() {
   // ── Delete confirmation for messages ──────────────────────────────────
   const [confirmDeleteContact, setConfirmDeleteContact] = useState(null);
 
+  // ── Delete confirmation for products ──────────────────────────────────
+  const [confirmDeleteProduct, setConfirmDeleteProduct] = useState(null);
+
   // ── Orders state ─────────────────────────────────────────────────────────
   const [orderSearch, setOrderSearch]           = useState('');
   const [orderFilterStatus, setOrderFilterStatus] = useState('');
@@ -597,7 +600,7 @@ export default function AdminDashboard() {
               <div className="flex gap-2 flex-shrink-0">
                 <button onClick={() => { setEditingProduct(product); setShowProductForm(true); }}
                   className="bg-navy text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-teal transition-colors">Edit</button>
-                <button onClick={() => { if (window.confirm('Delete this product?')) deleteProduct(product._id); }}
+                <button onClick={() => setConfirmDeleteProduct(product)}
                   className="bg-red-50 text-red-600 border border-red-200 px-4 py-2 rounded-xl text-sm font-medium hover:bg-red-100 transition-colors">Delete</button>
               </div>
             </div>
@@ -894,6 +897,20 @@ export default function AdminDashboard() {
           )}
         </div>
       </div>
+
+      {/* Delete Confirmation for Products - added at the end */}
+      <AnimatePresence>
+        {confirmDeleteProduct && (
+          <ConfirmDialog
+            message={`Delete "${confirmDeleteProduct.name}"? This cannot be undone.`}
+            onConfirm={() => {
+              deleteProduct(confirmDeleteProduct._id);
+              setConfirmDeleteProduct(null);
+            }}
+            onCancel={() => setConfirmDeleteProduct(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
